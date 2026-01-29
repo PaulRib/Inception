@@ -7,7 +7,7 @@ chown -R mysql:mysql /run/mysqld
 
 # 2. Si la base n'existe pas, on initialise les fichiers système
 if [ ! -d "/var/lib/mysql/mysql" ]; then
-    echo "MariaDB: Initialisation des fichiers système..."
+    echo "MariaDB: Initialization of system files..."
     mysql_install_db --user=mysql --datadir=/var/lib/mysql
 fi
 
@@ -25,5 +25,5 @@ EOF
 # 4. On lance MariaDB UNE SEULE FOIS
 # --init-file va exécuter le script SQL au démarrage
 # --bind-address=0.0.0.0 permet aux autres (WordPress) de se connecter
-echo "MariaDB: Lancement du serveur..."
+echo "MariaDB: Launching the server"
 exec mysqld_safe --init-file=/tmp/setup.sql --bind-address=0.0.0.0

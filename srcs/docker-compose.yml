@@ -11,6 +11,10 @@ services:
       - db:/var/lib/mysql
     expose:
       - "3306"
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "--silent"]
+      interval: 5s
+      retries: 5
   wp:
     build: ./requirements/wordpress
     container_name: wordpress
@@ -22,7 +26,12 @@ services:
     volumes:
       - wp:/var/www/html
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "test", "-f", "/var/www/html/index.php"]
+      interval: 5s
+      retries: 10
     expose:
       - "9000"
   nginx:
@@ -34,7 +43,8 @@ services:
     ports:
       - "443:443"
     depends_on:
-      - wp
+      wp:
+        condition: service_healthy
     volumes:
       - wp:/var/www/html
 networks:

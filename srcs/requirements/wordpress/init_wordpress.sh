@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "WordPress: Attente de MariaDB..."
+echo "WordPress: Waiting MariaDB..."
 while ! mariadb-admin --user=$SQL_USER  --password=$SQL_PASSWORD -P 3306 --host=mariadb ping --silent; do
     sleep 2
 done
@@ -12,6 +12,7 @@ if [ ! -f wp-config.php ]; then
 	wp core install --allow-root --url=$WP_URL --title=$WP_TITLE --admin_user=$WP_ADMIN_USER --admin_password=$WP_ADMIN_PASSWORD --admin_email=$WP_ADMIN_EMAIL
 	wp config set WP_HOME 'https://pribolzi.42.fr' --allow-root
     wp config set WP_SITEURL 'https://pribolzi.42.fr' --allow-root
+	wp create --allow-root $WP_USER $WP_USER_EMAIL -role=author --user_pass=WP_USER_PASSWORD
 fi
 
 /usr/sbin/php-fpm7.4 -F
