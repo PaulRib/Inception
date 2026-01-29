@@ -1,0 +1,55 @@
+services:
+  db:
+    build: ./requirements/mariadb
+    container_name: mariadb
+    restart: always
+    env_file:
+      - ./requirements/.env
+    networks:
+      - inception
+    volumes:
+      - db:/var/lib/mysql
+    expose:
+      - "3306"
+  wp:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    restart: always
+    env_file:
+      - ./requirements/.env
+    networks:
+      - inception
+    volumes:
+      - wp:/var/www/html
+    depends_on:
+      - db
+    expose:
+      - "9000"
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    restart: always
+    networks:
+      - inception
+    ports:
+      - "443:443"
+    depends_on:
+      - wp
+    volumes:
+      - wp:/var/www/html
+networks:
+  inception:
+    driver: bridge
+volumes:
+  wp:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/pribolzi/data/wp'
+  db:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/pribolzi/data/db'
