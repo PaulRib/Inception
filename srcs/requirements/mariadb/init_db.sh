@@ -26,4 +26,4 @@ EOF
 # --init-file va exécuter le script SQL au démarrage
 # --bind-address=0.0.0.0 permet aux autres (WordPress) de se connecter
 echo "MariaDB: Launching the server"
-exec mysqld_safe --init-file=/tmp/setup.sql --bind-address=0.0.0.0 --port=3306
+exec mysqld_safe --init-file=/tmp/setup.sql --bind-address=0.0.0.0

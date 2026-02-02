@@ -15,8 +15,8 @@ all: setup build
 
 setup:
 	@echo "$(YELLOW)Configuration des répertoires de données...$(RESET)"
-	@mkdir -p $(DATA_PATH)/db
-	@mkdir -p $(DATA_PATH)/wp
+	@sudo mkdir -p $(DATA_PATH)/db
+	@sudo mkdir -p $(DATA_PATH)/wp
 	@echo "$(GREEN)Dossiers créés.$(RESET)"
 
 build:
@@ -34,6 +34,8 @@ down:
 	@docker compose -f $(COMPOSE_FILE) down
 	@echo "$(GREEN)Containers supprimés.$(RESET)"
 
+# --- Nettoyage ---
+
 clean: down
 	@echo "$(YELLOW)Nettoyage des containers inutilisés...$(RESET)"
 	@docker system prune -a -f
@@ -47,6 +49,8 @@ fclean:
 	@echo "$(GREEN)Tout a été supprimé.$(RESET)"
 
 re: fclean all
+
+# --- Utilitaires ---
 
 status:
 	@docker ps
